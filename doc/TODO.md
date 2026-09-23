@@ -16,7 +16,7 @@ Approche par étapes — ajouter sources progressivement, pas tout d'un coup. Mi
 
 ### Étape 2 — Enrichissement (une fois étape 1 marche)
 - [ ] [Data INSEE sur les communes](https://www.data.gouv.fr/datasets/data-insee-sur-les-communes) — population, structure démographique par commune. Intérêt: pondère les indicateurs (prix par habitant, densité), utile pour comparer zones.
-- [ ] [DPE Logements existants](https://www.data.gouv.fr/datasets/diagnostic-de-performance-energetique-dpe-avant-et-apres-2021) — classe énergétique (A-G) par logement diagnostiqué, source ADEME. Intérêt: qualité du parc immobilier par zone, lien avec prix et aides rénovation.
+- [ ] [API DPE Logements](https://www.data.gouv.fr/dataservices/api-dpe-logements) — classe énergétique (A-G) par logement, requêtable par adresse en temps réel, source ADEME (9M+ diagnostics, +35k/semaine). Intérêt: qualité du parc immobilier par zone, lien avec prix et aides rénovation. Préférée au dataset statique — query par adresse via BAN, données à jour.
 - [ ] [Carte des risques retrait-gonflement des argiles](https://www.data.gouv.fr/datasets/carte-des-risques-retrait-gonflement-des-argiles) — zonage risque (faible à fort) par commune, lié au changement climatique. Intérêt: répond directement à la question type du sujet "risques d'investir dans ce lot causés par le réchauffement climatique".
 
 ### Étape 3 — Complément (si temps restant, pousse vers 12+)
@@ -24,6 +24,7 @@ Approche par étapes — ajouter sources progressivement, pas tout d'un coup. Mi
 - [ ] [Liste des gares (SNCF)](https://www.data.gouv.fr/datasets/liste-des-gares) — gares réseau ferré géolocalisées + fréquentation. Intérêt: indicateur accessibilité/transport, corrèle avec prix (effet proximité gare).
 - [ ] [INSEE — Taux de chômage localisés](https://www.insee.fr/fr/metadonnees/source/indicateur/p1660/bases-donnees-ligne) — taux chômage par région/département/zone d'emploi. Intérêt: 2e indicateur économique, complète le revenu pour analyse socio-éco.
 - [ ] [Base Adresse Nationale (BAN)](https://www.data.gouv.fr/datasets/base-adresse-nationale) — 25M+ adresses géolocalisées avec précision, référentiel officiel. Intérêt: clé de géocodage fin pour joindre DVF/bâtiments/avis entre eux quand le code commune seul ne suffit pas.
+- [ ] [Orpi — sitemap biens à vendre](https://www.orpi.com/sitemap-biens-a-vendre-1.xml) — **scraping** (annonces immo actives, prix demandé). Intérêt: complète DVF (transactions passées/réelles) avec offre actuelle sur le marché — permet comparer prix demandé vs prix vendu. Attention ToS (usage académique uniquement, cf. avertissement sujet).
 
 - [ ] Pour chaque source ajoutée: couvrir niveaux état/région/département/ville, documenter sourcing (scraping toléré usage académique seulement, attention ToS)
 
