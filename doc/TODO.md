@@ -2,6 +2,12 @@
 
 App: analyse marché immobilier français. Users = agences immo, collectivités, analystes (pas acheteurs). Focus DataOps.
 
+## 0. Flux de gestion des données (avant tout)
+- [ ] Valider architecture Medallion (Landing → Bronze → Silver → Gold → Serving) — voir [architecture/Data_flow.md](architecture/Data_flow.md)
+- [ ] Créer arborescence lake + conventions nommage + colonnes techniques (`_source`, `_batch_id`…)
+- [ ] Pipeline bout en bout sur 1 source (Admin Express puis DVF) avant d'étendre
+- [ ] Choisir orchestrateur (Airflow / Prefect / Databricks Workflows) + outil qualité
+
 ## 1. Collecte de données
 
 Approche par étapes — ajouter sources progressivement, pas tout d'un coup. Min 12 sources visé au total, mais on construit palier par palier.
