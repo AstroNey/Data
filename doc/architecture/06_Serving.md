@@ -1,6 +1,6 @@
-# 05 — Serving : bases exposées à l'app
+# 06 — Serving : bases exposées à l'app
 
-Précédent : [04_Gold.md](04_Gold.md) · Vue d'ensemble : [Data_flow.md](Data_flow.md) · Transverse : [06_Transverse.md](06_Transverse.md)
+Précédent : [05_Gold.md](05_Gold.md) · Vue d'ensemble : [Data_flow.md](Data_flow.md) · Suivant : [07_NLP.md](07_NLP.md)
 
 ---
 

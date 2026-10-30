@@ -1,6 +1,6 @@
-# 06 — Règles transverses : conventions, orchestration, qualité, lineage
+# 01 — Règles transverses : conventions, orchestration, qualité, lineage
 
-Vue d'ensemble : [Data_flow.md](Data_flow.md) · Couches : [Landing](01_Landing.md) · [Bronze](02_Bronze.md) · [Silver](03_Silver.md) · [Gold](04_Gold.md) · [Serving](05_Serving.md)
+Vue d'ensemble : [Data_flow.md](Data_flow.md) · Suivant : [02_Landing.md](02_Landing.md) · Couches : [Landing](02_Landing.md) · [Bronze](03_Bronze.md) · [Silver](04_Silver.md) · [Gold](05_Gold.md) · [Serving](06_Serving.md)
 
 ---
 
@@ -94,7 +94,7 @@ collect ─► check_landing ─► bronze ─► check_bronze ─► silver ─
 | Orpi | quotidien |
 | Avis | manuel (campagnes de scraping) |
 
-La vérification ne coûte rien grâce au `sha256` (cf. [01_Landing.md](01_Landing.md) §5.1) : fichier inchangé → rien ne tourne.
+La vérification ne coûte rien grâce au `sha256` (cf. [02_Landing.md](02_Landing.md) §5.1) : fichier inchangé → rien ne tourne.
 
 ### 5.3 Outil
 

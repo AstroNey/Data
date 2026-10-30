@@ -1,6 +1,6 @@
-# 02 — Bronze : brut, structuré, tracé
+# 03 — Bronze : brut, structuré, tracé
 
-Précédent : [01_Landing.md](01_Landing.md) · Vue d'ensemble : [Data_flow.md](Data_flow.md) · Suivant : [03_Silver.md](03_Silver.md)
+Précédent : [02_Landing.md](02_Landing.md) · Vue d'ensemble : [Data_flow.md](Data_flow.md) · Suivant : [04_Silver.md](04_Silver.md)
 
 ---
 
@@ -84,7 +84,7 @@ Ajoutées à **chaque** ligne de **chaque** table :
 - Delta, partitionné par `_batch_id` (et `_millesime` pour DVF, ~20M lignes).
 - **Append** d'un nouveau lot.
 - **Idempotence** : avant écriture, suppression des lignes du même `_batch_id` (`replaceWhere "_batch_id = '...'"`). Relancer un lot = le remplacer, jamais le doubler.
-- Le lot est inscrit dans la table de suivi `_runs` (cf. [06_Transverse.md](06_Transverse.md) §4).
+- Le lot est inscrit dans la table de suivi `_runs` (cf. [01_Transverse.md](01_Transverse.md) §4).
 
 ### 4.6 Évolution de structure
 
@@ -102,7 +102,7 @@ Une source qui **supprime ou renomme** une colonne → le job échoue volontaire
   - Source **non rejouable** : une annonce vendue ou un avis supprimé disparaît. Ajouter un champ plus tard (nb pièces, DPE affiché…) = ré-extraction sans re-scraping.
   - Debug : comparer l'extraction à la page d'origine.
   - Le rejeu est déjà couvert par Landing (`.html` immuables) : Bronze apporte surtout **une table Delta** au lieu de milliers de petits fichiers (lents pour Spark), avec `_batch_id` / `_url_source` → Silver relit un lot en une requête.
-  - Coût : HTML stocké deux fois. Limites : compression Parquet (le HTML se compresse très bien) ; si le volume devient gênant, ne garder que le bloc utile (JSON-LD `<script type="application/ld+json">` ou conteneur principal — découpe technique, pas interprétation), ou purger le HTML Landing une fois Bronze vérifié (autorisé par la règle 2 de [01_Landing.md](01_Landing.md)).
+  - Coût : HTML stocké deux fois. Limites : compression Parquet (le HTML se compresse très bien) ; si le volume devient gênant, ne garder que le bloc utile (JSON-LD `<script type="application/ld+json">` ou conteneur principal — découpe technique, pas interprétation), ou purger le HTML Landing une fois Bronze vérifié (autorisé par la règle 2 de [02_Landing.md](02_Landing.md)).
   - Orpi : snapshot quotidien de toutes les pages = volume × 365 → ne stocker une page que si son hash a changé.
 
 > **À valider** : volume réel du HTML (taille moyenne d'une page × nb pages / jour pour Orpi) après compression, avant de trancher entre HTML complet et bloc utile seul. Pour le hash Orpi, vérifier que la page ne contient pas d'éléments variables à chaque visite (timestamp, token, pub) qui changeraient le hash sans changement réel — sinon hasher le bloc utile seulement.

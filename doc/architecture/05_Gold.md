@@ -1,6 +1,6 @@
-# 04 — Gold : indicateurs prêts pour l'analyse
+# 05 — Gold : indicateurs prêts pour l'analyse
 
-Précédent : [03_Silver.md](03_Silver.md) · Vue d'ensemble : [Data_flow.md](Data_flow.md) · Suivant : [05_Serving.md](05_Serving.md)
+Précédent : [04_Silver.md](04_Silver.md) · Vue d'ensemble : [Data_flow.md](Data_flow.md) · Suivant : [06_Serving.md](06_Serving.md)
 
 ---
 

@@ -1,6 +1,6 @@
-# 01 — Landing : fichiers tels que reçus
+# 02 — Landing : fichiers tels que reçus
 
-Vue d'ensemble : [Data_flow.md](Data_flow.md) · Suivant : [02_Bronze.md](02_Bronze.md)
+Précédent : [01_Transverse.md](01_Transverse.md) · Vue d'ensemble : [Data_flow.md](Data_flow.md) · Suivant : [03_Bronze.md](03_Bronze.md)
 
 ---
 
@@ -41,7 +41,7 @@ lake/landing/dpe_api/2026-10-19/page_000001.json
 lake/landing/avis/2026-10-19/google_38185_000001.html
 ```
 
-- `<source>` : snake_case, sans accent, liste fermée (cf. [06_Transverse.md](06_Transverse.md) §2).
+- `<source>` : snake_case, sans accent, liste fermée (cf. [01_Transverse.md](01_Transverse.md) §2).
 - Archives ZIP **gardées zippées** : la décompression est faite par Bronze (le fichier Landing reste l'original).
 
 ## 4. Manifest

@@ -1,6 +1,6 @@
 # 07 — Modèles NLP : traitement des avis
 
-Précédent : [06_Transverse.md](06_Transverse.md) · Vue d'ensemble : [Data_flow.md](Data_flow.md) · Entrée : [03_Silver.md](03_Silver.md) (entité `avis`) · Sortie : [04_Gold.md](04_Gold.md) (`indicateurs_sentiment`)
+Précédent : [06_Serving.md](06_Serving.md) · Vue d'ensemble : [Data_flow.md](Data_flow.md) · Entrée : [04_Silver.md](04_Silver.md) (entité `avis`) · Sortie : [05_Gold.md](05_Gold.md) (`indicateurs_sentiment`)
 
 ---
 
@@ -68,11 +68,11 @@ Les noms de modèles sont des **propositions** : à valider par un test comparat
 ## 7. Agrégation Gold (`indicateurs_sentiment`)
 
 Par `(niveau_geo, code_geo, periode)` : `nb_avis`, `score_moyen`, `part_negatifs`, `part_positifs`, top thèmes avec leur part de mentions négatives.
-**Seuil de significativité** : sous N avis (à fixer, ex. 20) → indicateur marqué `insuffisant`, non affiché en carte (cf. [04_Gold.md](04_Gold.md)).
+**Seuil de significativité** : sous N avis (à fixer, ex. 20) → indicateur marqué `insuffisant`, non affiché en carte (cf. [05_Gold.md](05_Gold.md)).
 
 ## 8. Contraintes
 
-- Aucun nom d'auteur en clair (hash) — cf. [06_Transverse.md](06_Transverse.md) §10.
+- Aucun nom d'auteur en clair (hash) — cf. [01_Transverse.md](01_Transverse.md) §10.
 - Modèles sous licence ouverte (vérifier chaque licence Hugging Face avant usage).
 - CPU suffisant : volume d'avis modeste (milliers à dizaines de milliers), pas de GPU requis.
 

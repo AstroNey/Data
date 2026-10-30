@@ -1,6 +1,6 @@
-# 03 — Silver : nettoyé, typé, conforme
+# 04 — Silver : nettoyé, typé, conforme
 
-Précédent : [02_Bronze.md](02_Bronze.md) · Vue d'ensemble : [Data_flow.md](Data_flow.md) · Suivant : [04_Gold.md](04_Gold.md)
+Précédent : [03_Bronze.md](03_Bronze.md) · Vue d'ensemble : [Data_flow.md](Data_flow.md) · Suivant : [05_Gold.md](05_Gold.md)
 
 ---
 

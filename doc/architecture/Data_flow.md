@@ -6,12 +6,12 @@
 
 | Fichier | Contenu |
 |---|---|
-| [01_Landing.md](01_Landing.md) | Dépôt des fichiers bruts, manifest, méthodes de collecte (dataset / API / scraping) |
-| [02_Bronze.md](02_Bronze.md) | Conversion en Delta, tout en string, colonnes techniques, idempotence |
-| [03_Silver.md](03_Silver.md) | Nettoyage, codes géo, COG unique, flags qualité, traitements par entité (base du livrable nettoyage) |
-| [04_Gold.md](04_Gold.md) | Définition des indicateurs, agrégation multi-échelle, seuils de significativité |
-| [05_Serving.md](05_Serving.md) | Chargement PostgreSQL/PostGIS + MongoDB, index, bascule atomique, accès |
-| [06_Transverse.md](06_Transverse.md) | Arborescence du dépôt, nommage, orchestration, qualité, lineage, environnements |
+| [01_Transverse.md](01_Transverse.md) | Arborescence du dépôt, nommage, orchestration, qualité, lineage, environnements |
+| [02_Landing.md](02_Landing.md) | Dépôt des fichiers bruts, manifest, méthodes de collecte (dataset / API / scraping) |
+| [03_Bronze.md](03_Bronze.md) | Conversion en Delta, tout en string, colonnes techniques, idempotence |
+| [04_Silver.md](04_Silver.md) | Nettoyage, codes géo, COG unique, flags qualité, traitements par entité (base du livrable nettoyage) |
+| [05_Gold.md](05_Gold.md) | Définition des indicateurs, agrégation multi-échelle, seuils de significativité |
+| [06_Serving.md](06_Serving.md) | Chargement PostgreSQL/PostGIS + MongoDB, index, bascule atomique, accès |
 | [07_NLP.md](07_NLP.md) | Modèles NLP appliqués aux avis (langue, sentiment, thèmes), évaluation, sortie |
 | [08_Application.md](08_Application.md) | App cible : pages, questions auxquelles elle répond, interactions |
 

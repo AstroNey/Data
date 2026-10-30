@@ -1,6 +1,6 @@
 # 08 — Application cible
 
-Précédent : [07_NLP.md](07_NLP.md) · Vue d'ensemble : [Data_flow.md](Data_flow.md) · Données lues : [05_Serving.md](05_Serving.md)
+Précédent : [07_NLP.md](07_NLP.md) · Vue d'ensemble : [Data_flow.md](Data_flow.md) · Données lues : [06_Serving.md](06_Serving.md)
 
 ---
 
@@ -9,7 +9,7 @@ Précédent : [07_NLP.md](07_NLP.md) · Vue d'ensemble : [Data_flow.md](Data_flo
 Application web interactive d'**analyse du marché immobilier français** (Streamlit + Folium/Leaflet).
 Utilisateurs cibles : agences immobilières, collectivités, analystes — **pas** les acheteurs particuliers.
 
-Principe : l'app ne lit que la couche Serving ([05_Serving.md](05_Serving.md)) et n'effectue aucun calcul lourd (tout est pré-agrégé en Gold).
+Principe : l'app ne lit que la couche Serving ([06_Serving.md](06_Serving.md)) et n'effectue aucun calcul lourd (tout est pré-agrégé en Gold).
 
 ## 2. Pages
 
@@ -37,7 +37,7 @@ Principe : l'app ne lit que la couche Serving ([05_Serving.md](05_Serving.md)) e
 - Choix libre de l'indicateur, de la période et du type de bien.
 - Affichage des **seuils de significativité** : zone avec trop peu de ventes / d'avis → grisée, jamais interpolée.
 - Cartes sobres, représentation adaptée à la donnée (choroplèthe pour un taux, bulles pour un volume), pas de chartjunk.
-- Réponse < 500 ms sur les requêtes types ([05_Serving.md](05_Serving.md) §7).
+- Réponse < 500 ms sur les requêtes types ([06_Serving.md](06_Serving.md) §7).
 
 ## 5. Hors périmètre (v1)
 
