@@ -51,8 +51,17 @@ Le référentiel passe **toujours en premier** : toutes les autres tables valide
 - `code_insee` : string **5 caractères**. Bronze ne perd aucun zéro (tout en string), mais le zéro peut manquer **dans la source** :
   - DVF brut : pas de colonne `code_insee`, on la construit : `code_departement + lpad(code_commune, 3, '0')` (`Code commune` arrive sans zéros de tête, à vérifier sur échantillon).
   - xlsx INSEE / Filosofi : cellule numérique dans Excel → zéro perdu dans le fichier lui-même (`"1004"`).
-- Règle de complétion, **seulement pour le cas non ambigu** : 4 chiffres → `lpad` à 5 (`1004` → `01004`, seuls les départements 01–09 sont concernés). Valeur brute gardée dans `code_insee_source`, flag non bloquant `code_geo_complete`.
-- Tout autre format (3 caractères, caractères inattendus…) → pas de correction, la validation contre `silver.ref_geo` le marque `code_geo_inconnu` (cf. §4.3).
+- Règle de complétion, **seulement pour le cas non ambigu** (un seul zéro de tête perdu, valeur purement numérique) :
+
+  | Code | Longueur attendue | Exemple propre | Après Excel | Complétion |
+  |---|---|---|---|---|
+  | `code_insee` | 5 | `01053` | `1053` | 4 chiffres → `lpad` à 5 (départements 01–09) |
+  | `code_departement` | 2 (3 pour les DROM) | `01` | `1` | 1 chiffre → `lpad` à 2 |
+  | `code_region` | 2 | `01` (Guadeloupe) … `06` (Mayotte) | `1` … `6` | 1 chiffre → `lpad` à 2 |
+
+  Valeur brute gardée dans `code_insee_source` / `code_departement_source` / `code_region_source`, flag non bloquant `code_geo_complete`.
+- Tout autre format (`code_insee` sur 3 caractères, caractères inattendus…) → pas de correction, la validation contre `silver.ref_geo` le marque `code_geo_inconnu` (cf. §4.3).
+- Pas concernés : départements 10–95 (pas de zéro de tête), Corse (`2A004` contient une lettre, gardé en texte par Excel), DROM (`971…` commence par 9), `code_epci` (SIREN commençant par 2).
 - Corse : `2A` / `2B`, jamais `20`.
 - DROM : départements sur 3 chiffres (`971`…) ; reconstruction `code_insee` depuis DVF à vérifier sur échantillon.
 - Arrondissements municipaux (Paris `751xx`, Lyon `6938x`, Marseille `132xx`) : on garde le code arrondissement **et** on ajoute `code_insee_commune` (75056, 69123, 13055) pour agréger à la commune.
@@ -60,7 +69,7 @@ Le référentiel passe **toujours en premier** : toutes les autres tables valide
 
 > **À valider** sur les données réelles :
 > - DVF brut : format de `Code commune` (sans zéros de tête ?) et de `Code departement` (`01` ou `1` ?) — conditionne la règle de construction.
-> - Sources xlsx : liste des fichiers où le zéro est réellement perdu.
+> - Sources xlsx : liste des fichiers où le zéro est réellement perdu (`code_insee`, `code_departement` du chômage INSEE, `code_region` des tableaux régionaux).
 > - Nb de lignes portant `code_geo_complete` / `code_geo_inconnu` par source : si `code_geo_inconnu` est massif, la règle de complétion est incomplète.
 
 ### 4.3 Millésime COG unique
