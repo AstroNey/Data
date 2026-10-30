@@ -42,17 +42,26 @@ Le référentiel passe **toujours en premier** : toutes les autres tables valide
 | Dates | cast ISO `date` depuis `dd/MM/yyyy` (DVF) ou ISO (API). Dates futures ou < 1900 → `null` + flag. |
 | Montants | en euros, `decimal(14,2)`. |
 | Surfaces | en m², `decimal(10,2)`. |
-| Booléens | `oui/non`, `O/N`, `1/0` → `boolean`. |
+| Booléens | `oui/non`, `O/N`, `1/0`, `true/false` (insensible à la casse) → `boolean`. Autre valeur → `null` + flag. |
 | Texte | `trim`, espaces multiples réduits, encodage UTF-8. Libellés normalisés en minuscules sans accents dans une colonne `_norm` à côté de l'original. |
 | Valeurs secrétisées / non disponibles (`s`, `nd`, `NA`, vide) | `null` + colonne `<champ>_statut` (`secret`, `absent`). |
 
 ### 4.2 Codes géographiques
 
-- `code_insee` : string **5 caractères**, zéros de tête restaurés (`1004` → `01004`).
+- `code_insee` : string **5 caractères**. Bronze ne perd aucun zéro (tout en string), mais le zéro peut manquer **dans la source** :
+  - DVF brut : pas de colonne `code_insee`, on la construit : `code_departement + lpad(code_commune, 3, '0')` (`Code commune` arrive sans zéros de tête, à vérifier sur échantillon).
+  - xlsx INSEE / Filosofi : cellule numérique dans Excel → zéro perdu dans le fichier lui-même (`"1004"`).
+- Règle de complétion, **seulement pour le cas non ambigu** : 4 chiffres → `lpad` à 5 (`1004` → `01004`, seuls les départements 01–09 sont concernés). Valeur brute gardée dans `code_insee_source`, flag non bloquant `code_geo_complete`.
+- Tout autre format (3 caractères, caractères inattendus…) → pas de correction, la validation contre `silver.ref_geo` le marque `code_geo_inconnu` (cf. §4.3).
 - Corse : `2A` / `2B`, jamais `20`.
 - DROM : départements sur 3 chiffres (`971`…) ; reconstruction `code_insee` depuis DVF à vérifier sur échantillon.
 - Arrondissements municipaux (Paris `751xx`, Lyon `6938x`, Marseille `132xx`) : on garde le code arrondissement **et** on ajoute `code_insee_commune` (75056, 69123, 13055) pour agréger à la commune.
 - `code_departement` (2-3 car.), `code_region` (2 car.), `code_epci` (9 car.) : string.
+
+> **À valider** sur les données réelles :
+> - DVF brut : format de `Code commune` (sans zéros de tête ?) et de `Code departement` (`01` ou `1` ?) — conditionne la règle de construction.
+> - Sources xlsx : liste des fichiers où le zéro est réellement perdu.
+> - Nb de lignes portant `code_geo_complete` / `code_geo_inconnu` par source : si `code_geo_inconnu` est massif, la règle de complétion est incomplète.
 
 ### 4.3 Millésime COG unique
 
@@ -97,9 +106,15 @@ Les communes fusionnent/se scindent chaque année : un code INSEE de 2018 peut n
 6. **Aberrations** (flag, pas suppression) :
    - `valeur_fonciere` ≤ 1 000 € ou > 50 M€
    - surface < 9 m² (seuil légal habitable) ou > 1 000 m² pour un appartement
-   - prix/m² hors [P1 ; P99] **du département et de l'année** (bornes calculées, pas fixes)
+   - prix/m² hors bornes de Tukey sur `log(prix_m2)` : `[Q1 − 1,5·IQR ; Q3 + 1,5·IQR]`, calculées par **(département, année, type_bien)** (bornes calculées, pas fixes) :
+     - Pas de percentiles fixes (P1/P99) : ils flaguent par construction 2 % des ventes, même toutes légitimes. Tukey ne flague que les valeurs réellement isolées (possiblement aucune).
+     - Échelle log : la distribution des prix/m² est très asymétrique ; en échelle brute on flaguerait des biens chers légitimes et presque aucun bien anormalement bas.
+     - Effectif minimum : groupe < 30 ventes → bornes calculées au niveau région.
+     - Bornes et flags **recalculés sur toute la partition (département, année)** à chaque chargement, pas sur le seul lot : le millésime DVF de l'année en cours est partiel et republié chaque semestre.
 7. **Géocodage** : jointure sur `silver.adresse` (BAN) → `id_ban`, `lat`, `lon`, `score_geocodage`. Score < 0.6 → flag `geocodage_faible`. Échec → `null`, ligne gardée (rattachée par `code_insee`).
 - **Clé** : `id_mutation`.
+
+> **À valider** (étape 6) : `k = 1,5` et seuil de 30 ventes sont des valeurs de départ. À confirmer sur DVF réel : part de ventes flaguées `prix_aberrant` par département (attendu ~1 %), examen d'un échantillon de lignes flaguées. Si trop de faux positifs → `k = 3`.
 
 > Option à évaluer : charger **DVF géolocalisé (Etalab)** au lieu du DVF brut DGFiP — déjà regroupé par `id_mutation`, code commune sur 5 caractères et lat/lon fournis. Économise les étapes 1 et 7, mais dépend d'un retraitement tiers (à documenter).
 

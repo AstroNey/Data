@@ -78,7 +78,7 @@ C'est ici que vit la **méthodologie de nettoyage** (livrable). Une table Silver
 
 Traitements :
 - **Typage** : dates ISO, numériques (virgule décimale FR → point), booléens.
-- **Normalisation des codes géo** : `code_insee` sur 5 caractères (zéros de tête perdus par Excel), Corse `2A`/`2B`, arrondissements Paris/Lyon/Marseille.
+- **Normalisation des codes géo** : `code_insee` sur 5 caractères (zéros de tête absents dans les sources : Excel, `Code commune` DVF ; complétion seulement si non ambiguë, sinon flag), Corse `2A`/`2B`, arrondissements Paris/Lyon/Marseille.
 - **Mise au COG de référence** : les communes fusionnent chaque année → table de passage INSEE pour ramener toutes les sources au **même millésime COG** (sinon jointures cassées entre DVF 2018 et Admin Express 2026).
 - **Dédoublonnage** : ex. DVF = une ligne par lot/local → regrouper en mutation.
 - **Filtrage des aberrations** : prix/m² hors bornes, surfaces nulles, mutations hors vente (échanges, adjudications…) → **marquées** (`flag_qualite`), pas supprimées.

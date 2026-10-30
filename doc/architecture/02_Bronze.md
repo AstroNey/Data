@@ -97,7 +97,15 @@ Une source qui **supprime ou renomme** une colonne → le job échoue volontaire
 - **Admin Express** : charger **aussi** la couche `ARRONDISSEMENT_MUNICIPAL` (Paris/Lyon/Marseille : DVF localise par arrondissement).
 - **Filosofi** : valeurs secrétisées (petites communes) sous forme de `s`, `nd` ou vide → gardées telles quelles en string.
 - **DPE API** : un même DPE peut revenir dans deux lots (recouvrement des fenêtres de date) → doublons gardés en Bronze, dédoublonnés en Silver.
-- **Avis / Orpi** : HTML complet en une colonne `contenu_html`, même si lourd.
+- **Avis / Orpi** : HTML complet en une colonne `contenu_html`, même si lourd. Pourquoi :
+  - Le parsing est la transformation la plus fragile (sélecteurs qui cassent quand le site change) → fait en Silver, versionné et rejouable. Parsé en Bronze, une erreur de sélecteur rendrait Bronze faux.
+  - Source **non rejouable** : une annonce vendue ou un avis supprimé disparaît. Ajouter un champ plus tard (nb pièces, DPE affiché…) = ré-extraction sans re-scraping.
+  - Debug : comparer l'extraction à la page d'origine.
+  - Le rejeu est déjà couvert par Landing (`.html` immuables) : Bronze apporte surtout **une table Delta** au lieu de milliers de petits fichiers (lents pour Spark), avec `_batch_id` / `_url_source` → Silver relit un lot en une requête.
+  - Coût : HTML stocké deux fois. Limites : compression Parquet (le HTML se compresse très bien) ; si le volume devient gênant, ne garder que le bloc utile (JSON-LD `<script type="application/ld+json">` ou conteneur principal — découpe technique, pas interprétation), ou purger le HTML Landing une fois Bronze vérifié (autorisé par la règle 2 de [01_Landing.md](01_Landing.md)).
+  - Orpi : snapshot quotidien de toutes les pages = volume × 365 → ne stocker une page que si son hash a changé.
+
+> **À valider** : volume réel du HTML (taille moyenne d'une page × nb pages / jour pour Orpi) après compression, avant de trancher entre HTML complet et bloc utile seul. Pour le hash Orpi, vérifier que la page ne contient pas d'éléments variables à chaque visite (timestamp, token, pub) qui changeraient le hash sans changement réel — sinon hasher le bloc utile seulement.
 
 ## 6. Contrôles de sortie
 
